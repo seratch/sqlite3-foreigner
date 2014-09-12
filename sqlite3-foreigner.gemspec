@@ -3,7 +3,7 @@ $:.push File.expand_path("../lib", __FILE__)
 
 Gem::Specification.new do |s|
   s.name = 'sqlite3-foreigner'
-  s.version = '0.1.0'
+  s.version = '0.1.1'
   s.licenses = ['MIT']
   s.summary = 'Foreign Keys for Rails on SQLite3'
   s.description = 'Foreigner like FK migration for SQLite3'
