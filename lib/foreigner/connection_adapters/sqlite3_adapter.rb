@@ -33,7 +33,9 @@ module Foreigner
         end
 
         execute("drop table #{from_table}")
-        re_create_table = create_table.gsub(/("#{fk_column_name}"\s+[^,]+),/, "\\1 references #{to_table}(id),")
+
+        primary_key = options[:primary_key] || 'id'
+        re_create_table = create_table.gsub(/("#{fk_column_name}"\s+[^,]+),/, "\\1 references #{to_table}(#{primary_key}),")
         execute(re_create_table)
       end
 
