@@ -19,6 +19,7 @@ module Foreigner
       def add_foreign_key(from_table, to_table, options = {})
 
         fk_column_name = options[:column] || foreign_key_column(to_table)
+        pk_column_name = options[:primary_key] || 'id'
 
         meta_results = exec_query("select sql from sqlite_master where name = $1", nil, [[nil, from_table]])
         if meta_results.nil? || meta_results.rows.size == 0 
@@ -34,8 +35,7 @@ module Foreigner
 
         execute("drop table #{from_table}")
 
-        primary_key = options[:primary_key] || 'id'
-        re_create_table = create_table.gsub(/("#{fk_column_name}"\s+[^,]+),/, "\\1 references #{to_table}(#{primary_key}),")
+        re_create_table = create_table.gsub(/("#{fk_column_name}"\s+[^,\)]+)([,\)])/, "\\1 references #{to_table}(#{pk_column_name})\\2")
         execute(re_create_table)
       end
 
